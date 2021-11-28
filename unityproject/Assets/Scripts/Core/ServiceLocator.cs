@@ -97,8 +97,8 @@ public sealed class ServiceLocator :MBSingleton<ServiceLocator>
         }
 
         return dicAvailableMonoBehaviour[strTypeName] as T;
-
     }
+
 }
 //Source: http://www.unitygeek.com/unity_c_singleton/
 //Solve most of my problems !
