@@ -7,6 +7,8 @@ namespace sidz.spaceinvaders
     {
         [SerializeField] private PlayerView view;
 
+        [SerializeField] private Transform resBullet;
+
         private PlayerData data;
         private void LateUpdate()
         {
@@ -17,6 +19,10 @@ namespace sidz.spaceinvaders
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 view.Move(eDirection.RIGHT);
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                var createdBullet =Instantiate(resBullet,view.transform.position,transform.rotation);
             }
         }
     }
