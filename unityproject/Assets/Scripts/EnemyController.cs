@@ -30,6 +30,7 @@ namespace sidz.spaceinvaders
         private void Start()
         {
             fMaxRight = cam.ScreenToWorldPoint( new Vector3(Screen.width, Screen.height, cam.transform.position.z) ).x;
+            GridMove();
         }
        
     
