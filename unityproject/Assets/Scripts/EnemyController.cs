@@ -21,12 +21,15 @@ namespace sidz.spaceinvaders
         public float fMaxRight;
 
         [SerializeField]private Camera cam;
+        
+        [SerializeField]private Bullet resBullet;
 
         [Header("Settings")]
         public EnemyView resAliens;
 
         [SerializeField]private List<EnemyView> lstEnemiesSpawned;
-
+        [SerializeField] private AnimationCurve movementCurve;
+        private float fCurrentMultiplier = 0;
         private void Start()
         {
             fMaxRight = cam.ScreenToWorldPoint( new Vector3(Screen.width, Screen.height, cam.transform.position.z) ).x;
@@ -90,7 +93,15 @@ namespace sidz.spaceinvaders
                 {
                     root.transform.position += tempDirection * fGridMoveDistance;
                 }
-                yield return new WaitForSeconds(fGridMoveDelay);
+                yield return new WaitForSeconds(fGridMoveDelay - fCurrentMultiplier);
+                if (UnityEngine.Random.Range(1,100)%2 == 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(0, lstEnemiesSpawned.Count);
+                    var createdBullet = Instantiate(resBullet, lstEnemiesSpawned[randomIndex].transform.position, lstEnemiesSpawned[randomIndex].transform.rotation);
+                    var bulletComp = createdBullet.GetComponent<Bullet>();
+                    bulletComp.bEnemyOnly = false;
+                    bulletComp.vDirection = -Vector3.up;
+                }
                 iCurrentStep++;
             }
         }
@@ -100,10 +111,10 @@ namespace sidz.spaceinvaders
             if (iCurrentStep > iMaxStep)
             {
                 iCurrentStep = 0;
+                fCurrentMultiplier += 0.05f;//?? hardcoded !
                 return -current;
             }
             return current;
-
         }
 
 

@@ -25,6 +25,12 @@ namespace sidz.spaceinvaders
             transform.position = vMovingPos;
         }
 
-        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "Enemy" )
+            {
+                GameManager.Instance.GE_PlayerHurt(this,other.gameObject);
+            }
+        }
     }
 }

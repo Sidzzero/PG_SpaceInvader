@@ -23,6 +23,7 @@ namespace sidz.spaceinvaders
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 var createdBullet =Instantiate(resBullet,view.transform.position,transform.rotation);
+                createdBullet.GetComponent<Bullet>().vDirection = Vector3.up;
             }
         }
     }
