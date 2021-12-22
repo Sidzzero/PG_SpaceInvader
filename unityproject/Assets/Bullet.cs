@@ -13,7 +13,7 @@ namespace sidz.spaceinvaders
         private void Start()
         {
             instanceGM = GameManager.Instance;
-            Destroy(this.gameObject, 5);
+            Destroy(this.gameObject, 10);
         }
       
         private void Update()

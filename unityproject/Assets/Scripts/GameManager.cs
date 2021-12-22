@@ -10,14 +10,17 @@ namespace sidz.spaceinvaders
     {
         [Header("Controllers")]
         public UIController uiController;
+        public PlayerController playerController;
+        public EnemyController enemyController;
         private Vector2 vScreenBounds;
         private PlayerData data;
+        private int iCurrentEnemies = 0;
         public override void OnInit()
         {
             base.OnInit();
             ServiceLocator.Instance.AddService(this);
             vScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-            StartGame();
+          
         }
 
         #region HELPER_FUNC
@@ -25,6 +28,11 @@ namespace sidz.spaceinvaders
         {
             a_vWorldPos.x = Mathf.Clamp(a_vWorldPos.x, (vScreenBounds.x), -vScreenBounds.x);
             a_vWorldPos.y = Mathf.Clamp(a_vWorldPos.y, (vScreenBounds.y), -vScreenBounds.y);
+        }
+
+        internal void QuitGame()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion HELPER_FUNC
@@ -44,12 +52,13 @@ namespace sidz.spaceinvaders
             //Events setup
 
             //Start Movement
+            enemyController.Init();
+            uiController.UI_ToggleGameStartScreen(false);
+            iCurrentEnemies = enemyController.iRow * enemyController.iCol;
         }
         public void RestartGame()
-        { 
-         //Reset PLayer data
-         //Reset Enemies 
-         //Start Movement
+        {
+            StartGame();
         }
 
         public void PauseGame()
@@ -61,6 +70,11 @@ namespace sidz.spaceinvaders
         {
             data.iScore++;
             uiController.UI_UpdateScore(data.iScore);
+            enemyController.lstEnemiesSpawned.Remove(a_enemyView);
+            var tempVAl = Mathf.Lerp(2,iCurrentEnemies,enemyController.lstEnemiesSpawned.Count-1 ); ;
+            
+            //enemyController.fCurrentMultiplier = val; ;
+           
             Destroy(a_enemyView.gameObject);
             Destroy(a_bullet.gameObject);
         }
@@ -78,7 +92,7 @@ namespace sidz.spaceinvaders
         }
         public void GameOver()
         {
-            Time.timeScale = 0;
+            uiController.UI_ToggleGameOverScreen(true);
         }
 
        

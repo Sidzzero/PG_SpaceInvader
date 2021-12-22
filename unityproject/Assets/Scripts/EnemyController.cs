@@ -27,13 +27,12 @@ namespace sidz.spaceinvaders
         [Header("Settings")]
         public EnemyView resAliens;
 
-        [SerializeField]private List<EnemyView> lstEnemiesSpawned;
+        public List<EnemyView> lstEnemiesSpawned;
         [SerializeField] private AnimationCurve movementCurve;
-        private float fCurrentMultiplier = 0;
+        public float fCurrentMultiplier = 1;
         private void Start()
         {
-            fMaxRight = cam.ScreenToWorldPoint( new Vector3(Screen.width, Screen.height, cam.transform.position.z) ).x;
-            GridMove();
+          
         }
        
     
@@ -53,6 +52,7 @@ namespace sidz.spaceinvaders
         [ContextMenu("Test Init")]
         public void Init()
         {
+       
             Clean();
             lstEnemiesSpawned = new List<EnemyView>();
             for (int row = 0; row < iRow; row++)
@@ -67,8 +67,10 @@ namespace sidz.spaceinvaders
                     lstEnemiesSpawned.Add(createdEnemies);
                 }
              }
-           
 
+            fMaxRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.transform.position.z)).x;
+           
+            GridMove();
 
         }
         [ContextMenu("Move Grid")]
@@ -93,7 +95,7 @@ namespace sidz.spaceinvaders
                 {
                     root.transform.position += tempDirection * fGridMoveDistance;
                 }
-                yield return new WaitForSeconds(fGridMoveDelay - fCurrentMultiplier);
+                yield return new WaitForSeconds(Mathf.Max(0.1f,fGridMoveDelay - fCurrentMultiplier));
                 if (UnityEngine.Random.Range(1,100)%2 == 0)
                 {
                     int randomIndex = UnityEngine.Random.Range(0, lstEnemiesSpawned.Count);
@@ -111,7 +113,7 @@ namespace sidz.spaceinvaders
             if (iCurrentStep > iMaxStep)
             {
                 iCurrentStep = 0;
-                fCurrentMultiplier += 0.05f;//?? hardcoded !
+             //   fCurrentMultiplier += 0.05f;//?? hardcoded !
                 return -current;
             }
             return current;
